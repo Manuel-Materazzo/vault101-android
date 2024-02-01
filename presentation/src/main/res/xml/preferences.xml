@@ -4,12 +4,8 @@
 
 	<PreferenceCategory
 		android:key="license"
-		android:title="@string/screen_settings_license">
-
-		<androidx.preference.PreferenceScreen
-			android:enabled="false"
-			android:key="mail" />
-
+		android:title="@string/screen_settings_license"
+		android:summary="https://github.com/Manuel-Materazzo/vault101-android">
 	</PreferenceCategory>
 
 	<PreferenceCategory

@@ -116,68 +116,33 @@ class VaultListPresenter @Inject constructor( //
 			sharedPreferencesHandler.vaultsRemovedDuringMigration(null)
 		}
 
-		checkLicense()
-
 		checkPermissions()
 	}
-
-	private fun checkLicense() {
-		if (BuildConfig.FLAVOR == "apkstore" || BuildConfig.FLAVOR == "fdroid" || BuildConfig.FLAVOR == "lite") {
-			licenseCheckUseCase //
-				.withLicense("") //
-				.run(object : NoOpResultHandler<LicenseCheck>() {
-					override fun onSuccess(licenseCheck: LicenseCheck) {
-						if (BuildConfig.FLAVOR == "apkstore" && sharedPreferencesHandler.doUpdate()) {
-							checkForAppUpdates()
-						}
-					}
-
-					override fun onError(e: Throwable) {
-						val license = if (e is LicenseNotValidException) {
-							e.license
-						} else {
-							""
-						}
-						val intent = Intent(context(), LicenseCheckActivity::class.java)
-						intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-						intent.data = Uri.parse(String.format("app://cryptomator/%s", license))
-
-						try {
-							context().startActivity(intent)
-						} catch (e: ActivityNotFoundException) {
-							Toast.makeText(context(), "Please contact the support.", Toast.LENGTH_LONG).show()
-							finish()
-						}
-					}
-				})
-		}
-	}
-
 	private fun checkForAppUpdates() {
-		if (networkConnectionCheck.isPresent) {
-			updateCheckUseCase //
-				.withVersion(BuildConfig.VERSION_NAME) //
-				.run(object : NoOpResultHandler<Optional<UpdateCheck>>() {
-					override fun onSuccess(updateCheck: Optional<UpdateCheck>) {
-						if (updateCheck.isPresent) {
-							updateStatusRetrieved(updateCheck.get(), context())
-						} else {
-							Timber.tag("VaultListPresenter").i("UpdateCheck finished, latest version")
-						}
-						sharedPreferencesHandler.updateExecuted()
-					}
-
-					override fun onError(e: Throwable) {
-						if (e is SSLHandshakePreAndroid5UpdateCheckException) {
-							Timber.tag("SettingsPresenter").e(e, "Update check failed due to Android pre 5 and SSL Handshake not accepted")
-						} else {
-							showError(e)
-						}
-					}
-				})
-		} else {
-			Timber.tag("VaultListPresenter").i("Update check not started due to no internal connection")
-		}
+//		if (networkConnectionCheck.isPresent) {
+//			updateCheckUseCase //
+//				.withVersion(BuildConfig.VERSION_NAME) //
+//				.run(object : NoOpResultHandler<Optional<UpdateCheck>>() {
+//					override fun onSuccess(updateCheck: Optional<UpdateCheck>) {
+//						if (updateCheck.isPresent) {
+//							updateStatusRetrieved(updateCheck.get(), context())
+//						} else {
+//							Timber.tag("VaultListPresenter").i("UpdateCheck finished, latest version")
+//						}
+//						sharedPreferencesHandler.updateExecuted()
+//					}
+//
+//					override fun onError(e: Throwable) {
+//						if (e is SSLHandshakePreAndroid5UpdateCheckException) {
+//							Timber.tag("SettingsPresenter").e(e, "Update check failed due to Android pre 5 and SSL Handshake not accepted")
+//						} else {
+//							showError(e)
+//						}
+//					}
+//				})
+//		} else {
+//			Timber.tag("VaultListPresenter").i("Update check not started due to no internal connection")
+//		}
 	}
 
 	private fun updateStatusRetrieved(updateCheck: UpdateCheck, context: Context) {

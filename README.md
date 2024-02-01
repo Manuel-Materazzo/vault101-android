@@ -1,19 +1,11 @@
 ![cryptomator-android](cryptomator-android.png)
 
-[![Twitter](https://img.shields.io/badge/twitter-@Cryptomator-blue.svg?style=flat)](http://twitter.com/Cryptomator)
-[![Community](https://img.shields.io/badge/help-Community-orange.svg)](https://community.cryptomator.org)
-[![Documentation](https://img.shields.io/badge/help-Docs-orange.svg)](https://docs.cryptomator.org)
-[![Crowdin](https://badges.crowdin.net/cryptomator/localized.svg)](https://translate.cryptomator.org/)
 
 Cryptomator offers multi-platform transparent client-side encryption of your files in the cloud.
 
 Cryptomator for Android is currently available in the following  distribution channels:
 
-1. [Using Google Play](https://play.google.com/store/apps/details?id=org.cryptomator)
-2. [Using Cryptomator's Website](https://cryptomator.org/android/)
-3. [Using Cryptomator's F-Droid Repository](https://cryptomator.org/android/)
-4. [Using F-Droid's Main Repository](https://f-droid.org/en/packages/org.cryptomator.lite)
-5. Building from source using Gradle (instructions below)
+1. Building from source using Gradle (instructions below)
 
 ## Building
 
@@ -47,19 +39,6 @@ Use the Docker image to verify the build of the 'lite' flavor:
 3. Build the image using `docker build -t cryptomator-android .` in the `buildsystem/` directory
 4. Build Cryptomator using `docker run --rm -u $(id -u):$(id -g) -v $(pwd):/project -w /project cryptomator-android ./gradlew clean assembleLiteRelease` in the root of this folder
 5. Compare the build APK with the release version, using e.g. `apksigcopier compare --unsigned apk1 apk2`
-
-## Verify downloaded APK
-
-The published APKs are signed using a certificate with the following SHA-256 fingerprint `f7c3ec3b0d588d3cb52983e9eb1a7421c93d4339a286398e71d7b651e8d8ecdd`
-
-You can verify the fingerprint of the signing key used e.g. with `apksigner verify --print-certs Cryptomator.apk`, which should report
-
-```
-Signer #1 certificate DN: O=Skymatic, L=Bonn, ST=North Rhine-Westphalia, C=DE
-Signer #1 certificate SHA-256 digest: f7c3ec3b0d588d3cb52983e9eb1a7421c93d4339a286398e71d7b651e8d8ecdd
-Signer #1 certificate SHA-1 digest: fcc234014be39e980ebca5c477922f2312e80cdd
-Signer #1 certificate MD5 digest: a34b0b5af30529bf5b096d0e00acefe2
-```
 
 ## Contributing to Cryptomator for Android
 
